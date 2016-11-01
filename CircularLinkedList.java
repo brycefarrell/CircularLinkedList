@@ -100,15 +100,23 @@ public class CircularLinkedList<T> implements SimpleList<T>
             throw new IndexOutOfBoundsException();
         }
         
-        if (size == 1)
+        if (index == 0)
         {
             rv = head.element;
-            head.next.previous = head.previous;
-            head.previous.next = head.next;
+
+            Node temp = head;
+            head = head.next;
+            head.previous = temp.previous;
+            temp.previous.next = head;
+        }
+        else if (index == size - 1)
+        {
+            rv = head.previous.element;
+            head.previous = head.previous.previous;
+            head.previous.next = head;
         }
         else
         {
-
             Node node = getNode(index);
             Node n = getNode(index + 1);
             Node p = getNode(index - 1);
@@ -129,11 +137,11 @@ public class CircularLinkedList<T> implements SimpleList<T>
     
     private Node getNode(int i)
     {
-        if (i == -1)
+        if (i == 0)
         {
             return head;
         }
-        else if (i == size)
+        else if (i == size - 1)
         {
             return head.previous;
         }
